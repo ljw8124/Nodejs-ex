@@ -5,13 +5,21 @@ http.createServer((req, res) => {
   const path = url.parse(req.url, true).pathname;
   res.setHeader("Content-Type", "text/html");
 
-  if(path === "/user") {
-    user(req, res);
-  } else if(path === "/feed") {
-    feed(req, res);
+  // if(path === "/user") {
+  //   user(req, res);
+  // } else if(path === "/feed") {
+  //   feed(req, res);
+  // } else {
+  //   notFound(req, res);
+  // }
+
+  // path 안에 urlMap 이 있는지만 확인한다
+  if(path in urlMap) {
+      urlMap[path](req, res); // urlMap 에 path 값으로 매핑된 함수를 실행
   } else {
     notFound(req, res);
   }
+
 }).listen('3000', () => console.log('server connected!!'));
 
 // 이제 userInfo 를 받아서 후 처리 하도록 변경
@@ -36,3 +44,10 @@ const notFound = (req, res) => {
   res.statusCode = 404;
   res.end("404 not found page");
 }
+
+// 라우터가 점점 늘어날 수록 if 문에서 계속해서 추가해야되므로, map 을 이용하여 할당하도록 변경
+const urlMap = {
+  "/": (req, res) => res.end("HOME"),
+  "/user": user,
+  "/feed": feed,
+};
