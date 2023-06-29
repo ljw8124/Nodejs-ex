@@ -15,7 +15,7 @@ http.createServer((req, res) => {
 
   // path 안에 urlMap 이 있는지만 확인한다
   if(path in urlMap) {
-      urlMap[path](req, res); // urlMap 에 path 값으로 매핑된 함수를 실행
+      urlMap[path](req, res); // urlMap 에 path 값으로 매핑된 함수를 실행 -> js 에서는 함수도 일급객체이므로 이렇게 할당 및 사용이 가능해짐
   } else {
     notFound(req, res);
   }
@@ -46,8 +46,16 @@ const notFound = (req, res) => {
 }
 
 // 라우터가 점점 늘어날 수록 if 문에서 계속해서 추가해야되므로, map 을 이용하여 할당하도록 변경
+// 제일 아래에 작성한 이유는 user() 와 feed() 가 const 로 선언했기 때문에 초기화 이전에 선언하면 에러가 나오기 때문이다.
+// 호이스팅을 위해서는 var 로 변수를 선언해야 한다.
 const urlMap = {
   "/": (req, res) => res.end("HOME"),
   "/user": user,
   "/feed": feed,
 };
+
+// 만약 라우팅에 사용하는 함수가 많아지고, 각 함수에 공통 기능을 적용하고 싶을 때는 어떻게 하는것이 좋을까?
+// 익스프레스에는 미들웨어라는 개념이 있어서 요청에 대한 전후 처리를 할 수 있다.
+
+// 그리고 또한 notFound 에러 이외에 에러가 발생 했을 때는 try~ catch 를 이용하여 방어코딩하는 것이 좋다.
+
