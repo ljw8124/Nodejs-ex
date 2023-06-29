@@ -14,8 +14,12 @@ http.createServer((req, res) => {
   }
 }).listen('3000', () => console.log('server connected!!'));
 
+// 이제 userInfo 를 받아서 후 처리 하도록 변경
+// -> 동적으로 이름과 나이를 받아서 설정할 수 있게 됨
 const user = (req, res) => {
-  res.end("[user] name: joungwoo! age: 28");
+  const userInfo = url.parse(req.url, true).query;
+  const {name, age} = userInfo
+  res.end(`[user] name: ${name}! age: ${age}`);
 }
 
 const feed = (req, res)  => {
