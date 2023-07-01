@@ -64,3 +64,9 @@ console.log('a / b =', calc.div(a, b));
 
 // package.json scripts 에 명령을 등록하면 npm run ~ 형식으로 호출할 수 있다.
 // 스크립트 실행 전과 후에 실행될 스크립트도 지정할 수가 있는데, 이 때 명령어 앞에 pre 또는 post 를 붙이면 된다.
+
+// npx 로 코드 포매팅 명령어 prettier 실행하기
+// NPX 란 Node Package eXecute 로, 노드 패키지 실행자이다.
+// 본래대로 실행하면 node_modules/.bin/{패키지명} 과 같은 명령어로 실행해야 하지만,
+// npx 를 사용하면 npx {패키지명} 처럼 경로를 생략해 실행할 수 있다.
+
