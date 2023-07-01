@@ -1,0 +1,14 @@
+{
+  "name": "test-scripts",
+  "version": "1.0.0",
+  "dependencies": {
+  },
+  "scripts": {
+    "hello": "echo 'hello, Node.js'",
+    "start": "echo 'start, Node.js'",
+    "stop": "echo 'stop, Node.js'",
+    "restart": "echo 'restart, Node.js'",
+    "test": "echo 'test, Node.js'",
+    "posthello": "echo 'POST HELLO'"
+  }
+}
