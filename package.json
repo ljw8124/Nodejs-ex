@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "express": "^4.18.2",
-    "k6": "^0.0.0"
+    "k6": "^0.0.0",
+    "sample-package": "file:chapter03/sample-package"
   }
 }
