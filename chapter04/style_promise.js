@@ -6,8 +6,6 @@ function saveDB(user) {
   console.log(`save ${user.name} to DB`);
 
   return new Promise((resolve, reject) => {   // 콜백 대신 promise 객체로 생성
-    console.log(DB.length);
-    console.log(oldDBSize);
 
     if(DB.length > oldDBSize) {
       resolve(user);                          // 성공시 user 를 파라미터로 넘기는 함수 실행
