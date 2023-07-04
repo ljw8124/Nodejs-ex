@@ -8,7 +8,7 @@ function myWork(work) {
     } else {
       reject(new Error('일 해야지... 게임못해!!'));
     }
-  });
+  })
 }
 
 // 권장하지 않는 코딩 방식 => 기껏 promise 를 이용하여 코딩했지만, 콜백형식과 다를게 없어진다.
