@@ -33,6 +33,7 @@ function registerByPromise(user) {
   // 비동기 호출이지만 순서를 지켜서 실행됨
   const result = saveDB(user).then(sendEmail).then(getResult);
 
+  // 이 단계에서는 아직 result 가 결과값을 가져오기도 전에 console.log 로 호출했기 때문에 'pending' 형태로 반환한다.
   console.log(result);
 
   return result;
