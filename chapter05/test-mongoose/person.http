@@ -1,0 +1,36 @@
+// # 서버 변수 설정은 http-client.private.env.json 에서 설정
+// ### 가 구분자 역할을 해줌
+
+### get 요청
+GET {{server}}/person
+
+
+### 문서 쓰기
+POST {{server}}/person
+Content-Type: application/json
+
+{
+"name": "joungwoo Lee", "age": 28, "email":"ljw8124@naver.com"
+}
+
+### 생성한 문서 확인
+GET {{server}}/person/ljw8124@naver.com
+
+### PUT 요청 보내기, 문서 수정하기
+PUT {{server}}/person/ljw8124@naver.com
+Content-Type: application/json
+
+{
+"age": 20
+}
+
+### 문서 삭제하기
+DELETE {{server}}/person/ljw8124@naver.com
+
+{
+"success: true
+}
+
+
+
+

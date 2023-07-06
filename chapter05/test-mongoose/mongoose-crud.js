@@ -16,8 +16,6 @@ app.listen(3000, async() => {
 
   const mongodbUri = process.env.DB_URI
 
-  console.log('00000', mongodbUri);
-
   // mongoose 가 MongoDB 와 연결을 위해서는 connect() 를 사용한다.
   mongoose.connect(mongodbUri).then(console.log("Connected to MongoDB"));
 });
