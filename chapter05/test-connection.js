@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-const uri = process.env.DB_URL;
+const uri = process.env.DB_URI;
 
 const client = new MongoClient(uri, {     // MongoDB 클라이언트 객체 생성
   serverApi: {
