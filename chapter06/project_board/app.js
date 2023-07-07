@@ -15,7 +15,11 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname+ "/views");
 
 app.get("/", (req, res) => {
-  res.render("home", { title: "안녕하세요", message: "만나서 반갑습니다."}); // 이 때 기본 레이아웃을 사용하고 싶지 않다면 결과 객체에 layout: false 를 추가하면 된다
+  res.render("home", { title: "테스트 게시판", message: "만나서 반갑습니다." }); // 이 때 기본 레이아웃을 사용하고 싶지 않다면 결과 객체에 layout: false 를 추가하면 된다
+});
+
+app.get("/write", (req, res) => {
+  res.render("write", { title: "테스트 게시판" });
 });
 
 app.listen(3000);
