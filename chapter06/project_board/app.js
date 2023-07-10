@@ -2,8 +2,16 @@
 
 const express = require("express");
 const handlebars = require("express-handlebars");
+const mongodbConnection = require("./configs/mongodb-connection");
+const postService = require("./services/post-service");
+
+const port = 3000;
 
 const app = express();
+
+// req.body 와 POST 요청을 해석하기 위한 설정
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // 템플릿 엔진으로 핸들바를 등록, 여기서 handlebars 는 파일의 확장자로 사용할 이름(다른걸로 변경해도됨)
 // app.engine("handlebars", handlebars.engine()); // handlebars.engine({ layoutDir: "views" }) 와 같이 기본 레이아웃 디렉터리를 변경할 수도 있음
@@ -25,9 +33,18 @@ app.get("/", (req, res) => {
   res.render("home", { title: "테스트 게시판", message: "만나서 반갑습니다." }); // 이 때 기본 레이아웃을 사용하고 싶지 않다면 결과 객체에 layout: false 를 추가하면 된다
 });
 
-// 게시글 작성페이지
+// 게시글 작성페이지(쓰기 페이지로 이동)
 app.get("/write", (req, res) => {
   res.render("write", { title: "테스트 게시판" });
+});
+
+// 글작성
+app.post("/write", async (req, res) => {
+  const post = req.body;
+  // 결과반환
+  const result = await postService.writePost(collection, post);
+  // 화면전환
+  res.redirect(`/detail/${result.insertedId}`);
 });
 
 // 게시글 조회페이지
@@ -37,7 +54,17 @@ app.get("/detail/:id", (req, res) => {
   })  ;
 });
 
-app.listen(3000);
+let collection;
+
+app.listen(port, async () => {
+  console.log("Server started!! ===>", port);
+  const mongoClient = await mongodbConnection();
+
+  // mongoClient.db() 로 디비 선택, collection() 으로 컬렉션 선택하여 할당
+  collection = mongoClient.db().collection("post");
+
+  console.log("mongoDB connected");
+});
 
 // Node.js 는 파일 변경시 다시 재기동해야하는 번거러움이 있는데, 이를 해결시켜주는 것이
 // nodemon 이다.
