@@ -37,6 +37,10 @@ N 계층 아키텍처를 이용할 예정 -> 흔히 말하는 MVC 패턴 </br>
 // 뷰에서 화면처럼 보이기 위해 탬플릿 엔진을 사용(핸들바)
 
 > $ npm i express-handlebars@6.0.3
+
+// nodemon 사용
+
+> $ npm i nodemon@2.0.20
 ```
 
 ### package.json 수정하기
