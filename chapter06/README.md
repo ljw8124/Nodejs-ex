@@ -39,3 +39,7 @@ N 계층 아키텍처를 이용할 예정 -> 흔히 말하는 MVC 패턴 </br>
 > $ npm i express-handlebars@6.0.3
 ```
 
+### package.json 수정하기
+npm start 를 이용하여 node 를 실행시키려면, package.json 에 scripts 에 "start": "node app.js" 식으로 추가해주면 된다.</br>
+nodemon 을 이용하는 경우, "start": "npx nodemon app.js" 식으로 수정하면된다/
+
