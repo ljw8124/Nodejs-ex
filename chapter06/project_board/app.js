@@ -6,7 +6,13 @@ const handlebars = require("express-handlebars");
 const app = express();
 
 // 템플릿 엔진으로 핸들바를 등록, 여기서 handlebars 는 파일의 확장자로 사용할 이름(다른걸로 변경해도됨)
-app.engine("handlebars", handlebars.engine()); // handlebars.engine({ layoutDir: "views" }) 와 같이 기본 레이아웃 디렉터리를 변경할 수도 있음
+// app.engine("handlebars", handlebars.engine()); // handlebars.engine({ layoutDir: "views" }) 와 같이 기본 레이아웃 디렉터리를 변경할 수도 있음
+app.engine(
+    "handlebars",
+    handlebars.create({     // handlebars 객체 생성 위해서 create 사용
+      helpers: require("./configs/handlebars-helpers"), // 헬퍼 함수들을 추가
+    }).engine,
+);
 
 // 웹페이지 로드시 사용할 템플릿 엔진을 핸들바로 설정, 위에서 설정한 이름 그대로 설정해주어야 함
 app.set("view engine", "handlebars");
@@ -32,3 +38,7 @@ app.get("/detail/:id", (req, res) => {
 });
 
 app.listen(3000);
+
+// Node.js 는 파일 변경시 다시 재기동해야하는 번거러움이 있는데, 이를 해결시켜주는 것이
+// nodemon 이다.
+// $ npm i nodemon@2.0.20
