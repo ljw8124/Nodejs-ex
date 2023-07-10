@@ -7,8 +7,8 @@
 <h1>{{title}}</h1>  <!-- 제목영역 -->
 
 <!-- 검색어 영역 -->
-<input type="text" name="search" id="search" value="" size="50" placeholder="검색어를 입력하세요." />
-<button>검색</button>
+<input type="text" name="search" id="search" value="{{search}}" size="50" placeholder="검색어를 입력하세요." />
+<button onclick="location.href=`/?search=${document.getElementById('search').value}`">검색</button>   <!-- 버튼 클릭 시 search 변수에 검색어 데이터를 담아서 서버로 보냄 -->
 <br />
 
 <!-- 글쓰기 페이지 이동 링크 -->
@@ -27,26 +27,43 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td><a href="/detail/">타이틀</a></td>
-                <td align="center">작성자이름</td>
-                <td align="center">99999</td>
-                <td align="center">2022.12.25</td>
-            </tr>
+            <!-- each 를 사용하여 posts 객체에 접근함 -->
+            {{#each posts}}
+                <tr>
+                    <td><a href="/detail/{{_id}}">{{title}}</a></td>    <!-- post[0].title 으로 접근해도 됨 -->
+                    <td align="center">{{writer}}</td>
+                    <td align="center">{{hits}}</td>
+                    <td align="center">{{dateString cratedDt}}</td>     <!-- 이전에 만들어둔 커스텀 헬퍼 함수 -->
+                </tr>
+            {{/each}}
         </tbody>
-
     </table>
 </div>
 
 <!-- 페이징영역 -->
 <div>
-    <a>&lt;&lt;</a>
-    <a>&lt;</a>
-    <a>1</a>
-    <a>2</a>
-    <a>3</a>
-    <a>4</a>
-    <a>&gt;</a>
-    <a>&gt;&gt;</a>
-
+    {{#with paginator}} <!-- with 내장 헬퍼 함수 사용 -> paginator 안에 있는 값들을 사용하기 위해 사용 -->
+        <!-- @root 서버의 원본 참조 시 사용 -->
+        <a href="/?page=1&search={{@root.search}}">&lt;&lt;</a>
+        {{#if hasPrev}}
+            <a href="/?page={{prevPage}}&search={{@root.search}}">&lt;</a>
+        {{else}}
+            <a>&lt;</a>
+        {{/if}}
+        <!-- 페이지 숫자 반복 코드 시작 -->
+        {{#each pageList}}
+         {{#if (eq . @root.paginator.page)}}
+            <a>{{.}}</a>
+         {{else}}
+             <a href="/?page={{.}}&search={{@root.search}}">{{.}}</a>       <!-- . 는 this 의 의미 -->
+         {{/if}}
+        {{/each}}
+        <!-- 페이지 숫자 반복 끝 -->
+        {{#if hasNext}}
+            <a href="/?page={{nextPage}}&search={{@root.search}}">&gt;</a>
+        {{else}}
+            <a>&gt;</a>
+        {{/if}}
+        <a href="/?page={{lastPage}}&search={{@root.search}}">&gt;&gt;</a>
+    {{/with}}
 </div>

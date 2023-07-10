@@ -29,8 +29,21 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname+ "/views");
 
 // 메인페이지(홈)
-app.get("/", (req, res) => {
-  res.render("home", { title: "테스트 게시판", message: "만나서 반갑습니다." }); // 이 때 기본 레이아웃을 사용하고 싶지 않다면 결과 객체에 layout: false 를 추가하면 된다
+app.get("/", async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const search = req.query.search || "";
+
+  try {
+    const [posts, paginator] = await postService.list(collection, page, search);
+    // 이 때 기본 레이아웃을 사용하고 싶지 않다면 결과 객체에 layout: false 를 추가하면 된다
+    res.render("home", { title: "테스트 게시판", search, paginator, posts });
+
+  } catch(err) {
+    console.error(err);
+    res.render("home", { title: "테스트 게시판" });
+  }
+
+
 });
 
 // 게시글 작성페이지(쓰기 페이지로 이동)
@@ -43,6 +56,8 @@ app.post("/write", async (req, res) => {
   const post = req.body;
   // 결과반환
   const result = await postService.writePost(collection, post);
+
+  console.log("글쓰기 성공!!", result);
   // 화면전환
   res.redirect(`/detail/${result.insertedId}`);
 });
@@ -51,7 +66,7 @@ app.post("/write", async (req, res) => {
 app.get("/detail/:id", (req, res) => {
   res.render("detail", {
     title: "테스트 게시판",
-  })  ;
+  });
 });
 
 let collection;
