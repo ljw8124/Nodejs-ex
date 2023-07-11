@@ -2,7 +2,7 @@ const lodash = require("lodash");
 const PAGE_LIST_SIZE = 10;
 
 // 게시물의 총 개수, 현재 페이지, 한 페이지당 표시하는 게시물 개수
-module.exports = ({ totalCount, page, perPage = 10 }) => {
+module.exports = ({ totalCount, page, perPage = 10 }) => {  // module 을 불러올 때 perPage 값을 할당하지 않아도 default 로 10 을 할당함
  const PER_PAGE = perPage;
  const totalPage = Math.ceil(totalCount / PER_PAGE);    // 총 페이지 수 계산
 
