@@ -1,4 +1,5 @@
 const paginator = require("../utils/paginator");
+const { ObjectId } = require("mongodb");    // mongoDB 에서 자동으로 만드는 primaryKey
 
 // 글쓰기
 async function writePost(collection, post) {
@@ -27,8 +28,50 @@ async function list(collection, page, search) {
   return [posts, paginatorObj];
 }
 
+// DB 에서 필요한 필드들만 선택해서 가져오는 것을 의미함
+// 패스워드를 가져오지 않아도 되므로 패스워드만 빼는 프로젝션을 설정함
+const projectionOption = {
+  projection: {
+    // 프로젝션(투영) 결괏값에서 일부만 가져올 때 사용
+    password: 0,
+    "comment.password": 0,
+  },
+};
+
+// 게시글 정보를 가져오는 역할과 가져올 때마다 조회수를 1 증가시키는 역할을 함
+async function getDetailPost(collection, id) {
+  // 몽고디비 Collection 의 findOneAndUpdate() 함수 사용
+  // 게시글을 읽을 때마다 hits(조회수) 를 1 증가
+  return await collection.findOneAndUpdate({ _id: ObjectId(id) }, {$inc: { hits: 1}},  // $inc 는 값을 증가시키고 싶을 때 사용하는 연산자이다.
+      projectionOption);
+}
+
+async function getPostByIdAndPassword(collection, { id, password }) {
+  return await collection.findOne({ _id: ObjectId(id), password: password },
+      projectionOption);
+}
+
+// id 로 게시글 가져오는 함수
+async function getPostById(collection, id) {
+  return await collection.findOne({ _id: ObjectId(id) }, projectionOption);
+}
+
+// 게시글 수정
+async function updatePost(collection, id, post) {
+  const toUpdatePost = {
+    $set: {
+      ...post
+    },
+  };
+  return await collection.updateOne({ _id: ObjectId(id) }, toUpdatePost);
+}
+
 // require() 로 파일 임포트 시 외부로 노출하는 객체
 module.exports = {
   writePost,
-  list
+  list,
+  getDetailPost,
+  getPostByIdAndPassword,
+  getPostById,
+  updatePost,
 };

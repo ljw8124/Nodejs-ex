@@ -1,17 +1,22 @@
 <h1>{{title}}</h1>
-<h2 class="text-xl">제목입니다.</h2>
-<div>
-    작성자: <b>작성자 이름</b>
-</div>
-<div>
-    조회수: 9999 | 작성일시: 2022-01-01 00:00:00
-    <button onclick="modifyPost()">수정</button>
-    <button onclick="deletePost()">삭제</button>
-</div>
+{{#with post}}
+    <h2 class="text-xl">{{title}}</h2>
 
-<div>
-    <pre>본문영역!</pre>
-</div>
+    <div>
+        작성자: <b>{{writer}}</b>
+    </div>
+
+    <div>
+        조회수: {{hits}} | 작성일시: {{dateString createdDt}}
+        <button onclick="modifyPost()">수정</button>
+        <button onclick="deletePost()">삭제</button>
+    </div>
+
+    <div>
+        <pre>{{content}}</pre>      <!-- pre 태그 안에 넣어서 개행을 시킴 -->
+    </div>
+
+{{/with}}
 
 <section>
     <div>
@@ -53,3 +58,44 @@
         <a href="/">목록으로</a>
     </div>
 </footer>
+
+<script>
+
+    const postOption = {
+
+      method: "POST",
+      header: {
+        'Content-Type': "application/json",
+      },
+    }
+
+    // Ajax 사용을 위해서 fetch() 함수를 사용할 예정 -> Promise 반환
+    async function modifyPost() {
+      const password = prompt("패스워드를 입력해주세요.");        // prompt 함수는 브라우저에 내장된 모달을 띄우고 입력을 받을 수 있게 해줌
+
+      // 프롬포트에서 취소를 누른 경우 처리
+      if(!password) return;
+
+      // check-password API 실행
+      // fetch(url, option) 의 형태로 호출되는데, url 은 호출할 API 의 경로이고, option 은 method, header, body 등의 데이터가 들어간다.
+      const result = await fetch("/check-password", {
+        ...postOption,
+        body: JSON.stringify({ id: "{{post.id}}", password })
+      });
+
+      // json 함수를 실행하는 경우도 await 를 해줘야 함
+      const data = await result.json();
+
+      // 패스워드가 맞는 경우 수정페이지로 이동
+      if(data.isExist) {
+        document.location = "/modity/{{post._id}}";
+      } else {
+        alert("패스워드가 올바르지 않습니다.")
+      }
+
+    }
+
+    async function deletePost() {
+
+    }
+</script>

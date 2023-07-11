@@ -28,6 +28,8 @@ app.set("view engine", "handlebars");
 // 뷰 디렉터리를 해당 프로젝트 내 views 로 등록, 기본적으로는 상대 경로로 설정되는데 문제가 생길 수도 있으므로 절대경로로 변경
 app.set("views", __dirname+ "/views");
 
+/************************* handlebars 세팅 부분! **********************************/
+
 // 메인페이지(홈)
 app.get("/", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -42,7 +44,6 @@ app.get("/", async (req, res) => {
     console.error(err);
     res.render("home", { title: "테스트 게시판" });
   }
-
 
 });
 
@@ -63,10 +64,30 @@ app.post("/write", async (req, res) => {
 });
 
 // 게시글 조회페이지
-app.get("/detail/:id", (req, res) => {
+app.get("/detail/:id", async (req, res) => {
+
+  const result = await postService.getDetailPost(collection, req.params.id);
+
   res.render("detail", {
     title: "테스트 게시판",
+    post: result.value,
   });
+
+});
+
+app.post("check-password", async (req, res) => {
+  const { id, password } = req.body;
+
+  // postService 의 getPostByIdAndPassword() 함수를 사용해 게시글 데이터 확인
+  const post = await postService.getPostByIdAndPassword(collection, { id, password });
+
+  // 데이터가 있으면 isExist true, 없으면 false
+  if(!post) {
+    return res.status(404).json({ isExist: false });
+  } else {
+    return res.json({ isExist: true });
+  }
+
 });
 
 let collection;
