@@ -49,7 +49,8 @@ app.get("/", async (req, res) => {
 
 // 게시글 작성페이지(쓰기 페이지로 이동)
 app.get("/write", (req, res) => {
-  res.render("write", { title: "테스트 게시판" });
+  // 쓰기 페이지 이동시에 create 의 값을 가진 mode 변수를 추가함
+  res.render("write", { title: "테스트 게시판", mode: "create" });
 });
 
 // 글작성
@@ -61,6 +62,44 @@ app.post("/write", async (req, res) => {
   console.log("글쓰기 성공!!", result);
   // 화면전환
   res.redirect(`/detail/${result.insertedId}`);
+});
+
+// 수정 데이터를 받음
+app.get("/modify/:id", async (req, res) => {
+  const { id } = req.params;   // url 에서 가져옴
+
+  const post = await postService.getPostById(collection, id);
+
+  console.log('update 할 게시물 ===>', post);
+
+  // app.post("modify") 로 이동
+  res.render("write", { title: "테스트 게시판", mode: "modify", post });
+
+});
+
+// 수정 데이터를 처리
+app.post("/modify", async (req, res) => {
+  const { id, title, writer, password, content } = req.body;
+
+  const post = {
+    title,
+    writer,
+    password,
+    content,
+    createdDt: new Date().toISOString(),
+  }
+  // 업데이트 결과
+  try {
+    const result = postService.updatePost(collection, id, post);
+
+    if(result) console.log("update success!!");
+
+  } catch(err) {
+    console.error("update failed....", err)
+  }
+
+  res.redirect(`/detail/${id}`);
+
 });
 
 // 게시글 조회페이지
@@ -75,7 +114,7 @@ app.get("/detail/:id", async (req, res) => {
 
 });
 
-app.post("check-password", async (req, res) => {
+app.post("/check-password", async (req, res) => {
   const { id, password } = req.body;
 
   // postService 의 getPostByIdAndPassword() 함수를 사용해 게시글 데이터 확인

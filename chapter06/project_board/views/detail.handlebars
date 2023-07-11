@@ -16,42 +16,41 @@
         <pre>{{content}}</pre>      <!-- pre 태그 안에 넣어서 개행을 시킴 -->
     </div>
 
+    <section>
+        <div>
+            <h3>3개의 댓글이 있습니다</h3>
+        </div>
+
+        <form method="post" action="/write-comment">
+            <div>
+                <div>
+                    <input type="text" name="name" placeholder="이름" />
+                    <input type="password" name="password" placeholder="비밀번호" />
+                </div>
+                <div>
+                    <textarea cols="40" rows="3" name="comment" placeholder="댓글을 입력해주세요"></textarea>
+                    <br /><br />
+                    <button>댓글쓰기</button>   <!-- submit 은 화면을 갱신시키므로, ajax 로 처리하기 위해서 일반 버튼으로 만듦 -->
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <div>
+            <div>
+                작성자: <b>댓글 작성자</b>
+            </div>
+            <div>
+                작성일시: 2022-01-01 00:00:00
+                <button onclick="deleteComment('1')">삭제</button>
+            </div>
+        </div>
+        <div>
+            <pre>{{comment}}</pre>
+        </div>
+    </section>
 {{/with}}
-
-<section>
-    <div>
-        <h3>3개의 댓글이 있습니다</h3>
-    </div>
-
-    <form method="post" action="/write-comment">
-        <div>
-            <div>
-                <input type="text" name="name" placeholder="이름" />
-                <input type="password" name="password" placeholder="비밀번호" />
-            </div>
-            <div>
-                <textarea cols="40" rows="3" name="comment" placeholder="댓글을 입력해주세요"></textarea>
-                <br /><br />
-                <button>댓글쓰기</button>   <!-- submit 은 화면을 갱신시키므로, ajax 로 처리하기 위해서 일반 버튼으로 만듦 -->
-            </div>
-        </div>
-    </form>
-</section>
-
-<section>
-    <div>
-        <div>
-            작성자: <b>댓글 작성자</b>
-        </div>
-        <div>
-            작성일시: 2022-01-01 00:00:00
-            <button onclick="deleteComment('1')">삭제</button>
-        </div>
-    </div>
-    <div>
-        <pre>{{comment}}</pre>
-    </div>
-</section>
 
 <footer>
     <div>
@@ -62,9 +61,8 @@
 <script>
 
     const postOption = {
-
       method: "POST",
-      header: {
+      headers: {
         'Content-Type': "application/json",
       },
     }
@@ -80,7 +78,7 @@
       // fetch(url, option) 의 형태로 호출되는데, url 은 호출할 API 의 경로이고, option 은 method, header, body 등의 데이터가 들어간다.
       const result = await fetch("/check-password", {
         ...postOption,
-        body: JSON.stringify({ id: "{{post.id}}", password })
+        body: JSON.stringify({ id: "{{post._id}}", password })
       });
 
       // json 함수를 실행하는 경우도 await 를 해줘야 함
@@ -88,14 +86,13 @@
 
       // 패스워드가 맞는 경우 수정페이지로 이동
       if(data.isExist) {
-        document.location = "/modity/{{post._id}}";
+        document.location = "/modify/{{post._id}}";
       } else {
-        alert("패스워드가 올바르지 않습니다.")
+        alert("비밀번호가 일치하지 않습니다.");
       }
 
     }
 
-    async function deletePost() {
+    async function deletePost() { }
 
-    }
 </script>

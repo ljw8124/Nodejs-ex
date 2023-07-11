@@ -51,12 +51,15 @@ async function getPostByIdAndPassword(collection, { id, password }) {
       projectionOption);
 }
 
-// id 로 게시글 가져오는 함수
+// id 로 게시글 가져오는 함수 -> 위에 함수와 동일해보이나, password 는 점검하지 않는다.
 async function getPostById(collection, id) {
+  // findOnd(filter, option) 형태에서 filter 는 id 가 일치하는 게시물만 가져오라는 의미이다.
+  // 이 때 projectionOption 에 명시한대로, 패스워드는 가져오지 않는다.
   return await collection.findOne({ _id: ObjectId(id) }, projectionOption);
 }
 
 // 게시글 수정
+// id 값이 일치하는 게시물을 매개변수로 받은 post 내용으로 수정한다.
 async function updatePost(collection, id, post) {
   const toUpdatePost = {
     $set: {
