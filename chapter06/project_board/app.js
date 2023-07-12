@@ -5,6 +5,8 @@ const handlebars = require("express-handlebars");
 const mongodbConnection = require("./configs/mongodb-connection");
 const postService = require("./services/post-service");
 
+const {ObjectId} = require("mongodb");
+
 const port = 3000;
 
 const app = express();
@@ -70,7 +72,7 @@ app.get("/modify/:id", async (req, res) => {
 
   const post = await postService.getPostById(collection, id);
 
-  console.log('update 할 게시물 ===>', post);
+  // console.log('update 할 게시물 ===>', post);
 
   // app.post("modify") 로 이동
   res.render("write", { title: "테스트 게시판", mode: "modify", post });
@@ -100,6 +102,27 @@ app.post("/modify", async (req, res) => {
 
   res.redirect(`/detail/${id}`);
 
+});
+
+app.delete("/delete", async (req, res) => {
+  const {id, password} = req.body;
+  try {
+    // collection 의 deleteOne 을 사용하여 게시글 하나를 삭제
+    const result = await collection.deleteOne({_id: ObjectId(id), password: password});
+
+    // 삭제 성공시에만 1
+    if(result.deletedCount !== 1) {
+      console.log('삭제 실패');
+      return res.json({isSuccess: false});
+    }
+
+    return res.json({isSuccess: true});
+
+    // 네트워크 연결이 불안정하거나 등의 예외상황
+  } catch(err) {
+    console.error('delete failed....', err);
+    return res.json({isSuccess: false});
+  }
 });
 
 // 게시글 조회페이지
