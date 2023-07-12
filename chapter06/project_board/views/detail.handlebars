@@ -18,10 +18,12 @@
 
     <section>
         <div>
-            <h3>3개의 댓글이 있습니다</h3>
+            <!-- 몽고디비에서 테이블을 따로 만들지 않아도 댓글 작성 가능, 대용량 커뮤니티가 아니라는 가정하에 -->
+            <h3>{{lengthOfList comments}}개의 댓글이 있습니다</h3>
         </div>
 
         <form method="post" action="/write-comment">
+            <input type="hidden" name="id" value="{{_id}}" />  <!-- 게시글 ID -->
             <div>
                 <div>
                     <input type="text" name="name" placeholder="이름" />
@@ -37,18 +39,20 @@
     </section>
 
     <section>
-        <div>
+        {{#each comments}}
             <div>
-                작성자: <b>댓글 작성자</b>
+                <div>
+                    작성자: <b>{{name}}</b>
+                </div>
+                <div>
+                    작성일시: {{dateString createdDt}}
+                    <button onclick="deleteComment('{{idx}}')">삭제</button>
+                </div>
             </div>
             <div>
-                작성일시: 2022-01-01 00:00:00
-                <button onclick="deleteComment('1')">삭제</button>
+                <pre>{{comment}}</pre>
             </div>
-        </div>
-        <div>
-            <pre>{{comment}}</pre>
-        </div>
+        {{/each}}
     </section>
 {{/with}}
 
