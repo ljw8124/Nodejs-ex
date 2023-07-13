@@ -6,6 +6,7 @@ const mongodbConnection = require("./configs/mongodb-connection");
 const postService = require("./services/post-service");
 
 const {ObjectId} = require("mongodb");
+const bcrypt = require('bcrypt');
 
 const port = 3000;
 
@@ -58,6 +59,10 @@ app.get("/write", (req, res) => {
 // 글작성
 app.post("/write", async (req, res) => {
   const post = req.body;
+
+  // 비밀번호 bcrypt 를 이용하여 암호화
+  post.password = await bcrypt.hashSync(post.password, 10);
+
   // 결과반환
   const result = await postService.writePost(collection, post);
 
@@ -82,6 +87,8 @@ app.get("/modify/:id", async (req, res) => {
 // 수정 데이터를 처리
 app.post("/modify", async (req, res) => {
   const { id, title, writer, password, content } = req.body;
+
+
 
   const post = {
     title,
