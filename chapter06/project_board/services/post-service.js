@@ -1,8 +1,13 @@
 const paginator = require("../utils/paginator");
 const { ObjectId } = require("mongodb");    // mongoDB 에서 자동으로 만드는 primaryKey
+const bcrypt = require('bcrypt');
 
 // 글쓰기
 async function writePost(collection, post) {
+
+  // 비밀번호 bcrypt 를 이용하여 암호화
+  // post.password = await bcrypt.hashSync(post.password, 10);
+
   post.hits = 0;    // 조회수
   post.createdDt = new Date().toISOString();  // 날짜 ISO 포맷으로 저장
   return await collection.insertOne(post);    // 몽고 디비에 post 저장 후 결과 반환
@@ -69,6 +74,11 @@ async function updatePost(collection, id, post) {
   return await collection.updateOne({ _id: ObjectId(id) }, toUpdatePost);
 }
 
+async function deletePost(collection, id, password) {
+
+  return await collection.deleteOne({_id: ObjectId(id), password: password});
+}
+
 // require() 로 파일 임포트 시 외부로 노출하는 객체
 module.exports = {
   writePost,
@@ -77,5 +87,6 @@ module.exports = {
   getPostByIdAndPassword,
   getPostById,
   updatePost,
+  deletePost,
   projectionOption
 };

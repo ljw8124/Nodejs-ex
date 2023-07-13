@@ -6,7 +6,6 @@ const mongodbConnection = require("./configs/mongodb-connection");
 const postService = require("./services/post-service");
 
 const {ObjectId} = require("mongodb");
-const bcrypt = require('bcrypt');
 
 const port = 3000;
 
@@ -60,9 +59,6 @@ app.get("/write", (req, res) => {
 app.post("/write", async (req, res) => {
   const post = req.body;
 
-  // 비밀번호 bcrypt 를 이용하여 암호화
-  post.password = await bcrypt.hashSync(post.password, 10);
-
   // 결과반환
   const result = await postService.writePost(collection, post);
 
@@ -115,7 +111,7 @@ app.delete("/delete", async (req, res) => {
   const {id, password} = req.body;
   try {
     // collection 의 deleteOne 을 사용하여 게시글 하나를 삭제
-    const result = await collection.deleteOne({_id: ObjectId(id), password: password});
+    const result = postService.deletePost(collection, id, password);
 
     // 삭제 성공시에만 1
     if(result.deletedCount !== 1) {
