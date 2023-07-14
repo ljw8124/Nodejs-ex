@@ -44,3 +44,8 @@ ex) <모듈명><컴포넌트명> => HelloController
  interface BookSeries extends Series {}
  class MovieSeries extends Series {}
 ```
+
+## 개발 프로세스
+1. API 만들기 (프로젝트 생성 -> 컨트롤러 생성 -> 블로그 API 작성 -> 메모리와 파일로 블로그 API 만들기)
+2. 의존성 주입 (의존성 주입 설정 -> 서비스에 리포지토리 의존성 주입하기 -> 컨트롤러에 서비스 의존성 주입)
+3. 몽고디비 연동하기 (의존성 설치 -> 스키마 만들기 -> 몽고디비 리포지토리 생성 -> 서비스에서 몽고디비를 사용하도록 변경)
