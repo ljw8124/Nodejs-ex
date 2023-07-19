@@ -1,0 +1,27 @@
+
+### Create 유저생성
+POST http://localhost:3000/user/create
+content-type: application/json
+
+{
+  "username": "andy",
+  "password": "test1234",
+  "email": "andy@gmail.com"
+}
+
+### GetUser 유저정보찾기
+GET http://localhost:3000/user/getUser/andy@gmail.com
+
+### Update User 유저정보 업데이트
+PUT http://localhost:3000/user/update/andy@gmail.com
+content-type: application/json
+
+{
+  "username": "andrew",
+  "password": "update1234",
+  "email" : "andy@gmail.com"
+}
+
+### Delete User 유저삭제
+DELETE http://localhost:3000/user/delete/andy@gmail.com
+# 위 DElETE 실행시 결과로 affected: 1 로 오는데, 1개의 데이터에 영향을 미쳤다는 의미이다.
