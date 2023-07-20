@@ -6,7 +6,7 @@ content-type: application/json
 {
   "username": "andy",
   "password": "test1234",
-  "email": "andy@gmail.com"
+  "email": "andy.com"
 }
 
 ### GetUser 유저정보찾기
@@ -19,7 +19,7 @@ content-type: application/json
 {
   "username": "andrew",
   "password": "update1234",
-  "email" : "andy@gmail.com"
+  "email" : "andy-gmail"
 }
 
 ### Delete User 유저삭제

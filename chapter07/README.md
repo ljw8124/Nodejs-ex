@@ -69,6 +69,8 @@ ValidationPipe 이용 -> class-validator 와 class-transformer 설치 필요
 - class-validator: 데코레이터를 사용해 간편하게 유효성 검증을 하는 라이브러리
 - class-transformer: JSON 정보를 클래스 객체로 변경한다. 받은 요청을 변환한 클래스가 컨트롤러의 핸들러 메서드의 매개변수에 선언되어 있는 클래스와 같다면, 유효성 검증을 한다.
 
-
+```
+$ npm i install class-validator class-transformer
+```
 
 

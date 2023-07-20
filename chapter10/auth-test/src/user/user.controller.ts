@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Param, Put, Delete } from '@nestjs/common';
 import { User } from "./user.entity";
 import { UserService } from "./user.service";
+import { CreateUserDto, UpdateUserDto } from "./user.dto";
 
 // url 이 user 로 시작된다는 의미
 @Controller('user')
@@ -8,7 +9,7 @@ export class UserController {
     constructor(private userService: UserService) { }
 
     @Post('/create')
-    CreateUser(@Body() user: User) {
+    CreateUser(@Body() user: CreateUserDto) {
         return this.userService.createUser(user);
     }
 
@@ -22,7 +23,7 @@ export class UserController {
     }
 
     @Put('update/:email')
-    updateUser(@Param('email') email: string, @Body() user: User) {
+    updateUser(@Param('email') email: string, @Body() user: UpdateUserDto) {
         console.log('변경할 유저 ==>', user);
         return this.userService.updateUser(email, user);
     }
