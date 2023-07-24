@@ -32,9 +32,9 @@ export class AuthController {
         return res.send({message: 'login success'});
     }
 
-    @UseGuards('auth')
+    @UseGuards(LoginGuard)
     @Post('login2')
-    async login2(@Request() req, @Response res) {
+    async login2(@Request() req, @Response() res) {
         // 쿠키 정보는 없지만, request 에 user 정보가 있다면 응답값에 쿠키 정보를 추가
         if(!req.cookie['login'] && req.user) {
             // 응답에 쿠키 정보 추가
