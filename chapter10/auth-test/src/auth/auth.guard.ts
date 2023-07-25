@@ -11,7 +11,7 @@ export class LoginGuard implements CanActivate{
         const request = context.switchToHttp().getRequest();
 
         // 쿠키가 있다면, 인증된 것임
-        if(request.cookie['login']) {
+        if(request.cookies['login']) {
             return true;
         }
         if(!request.body.email || !request.body.password) {
