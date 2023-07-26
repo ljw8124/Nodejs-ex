@@ -32,3 +32,24 @@ content-type: application/json
 ### Guard 테스트
 GET http://localhost:3000/auth/test-guard
 
+
+### 로그인 테스트3
+POST http://localhost:3000/auth/login3
+content-type: application/json
+
+{
+  "email": "ljw8124@gmail.com",
+  "password": "1234"
+}
+
+### 틀린 패스워드로 로그인
+POST http://localhost:3000/auth/login3
+content-type: application/json
+
+{
+  "email": "ljw8124@gmail.com",
+  "password": "1233"
+}
+
+### 인증이 성공하는지 테스트
+GET http://localhost:3000/auth/test-guard2

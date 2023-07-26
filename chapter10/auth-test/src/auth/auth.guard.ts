@@ -1,7 +1,6 @@
 import {CanActivate, ExecutionContext, Injectable} from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import {AuthService} from "./auth.service";
-import {In} from "typeorm";
 
 @Injectable()
 export class LoginGuard implements CanActivate{
