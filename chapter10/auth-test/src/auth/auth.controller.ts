@@ -1,7 +1,7 @@
-import {Body, Controller, Get, Post, Request, Res, Response, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Post, Req, Request, Res, Response, UseGuards} from '@nestjs/common';
 import { CreateUserDto } from "../user/user.dto";
 import { AuthService } from "./auth.service";
-import { LoginGuard } from "./auth.guard";
+import { AuthenticateGuard, LocalAuthGuard, LoginGuard } from "./auth.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -51,5 +51,16 @@ export class AuthController {
     @Get('test-guard')
     testGuard() {
         return '로그인 된 때만 이 글이 보입니다.'
+    }
+    @UseGuards(LocalAuthGuard)
+    @Post('login3')
+    login3(@Request() req) {
+        return req.user;
+    }
+
+    @UseGuards(AuthenticateGuard)
+    @Get('test-guard2')
+    testGuardWithSession(@Request() req) {
+        return req.user;
     }
 }
