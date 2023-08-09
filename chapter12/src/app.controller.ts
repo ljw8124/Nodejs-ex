@@ -1,7 +1,7 @@
-import {Bind, Controller, Get, Post, UploadedFile, UseInterceptors} from '@nestjs/common';
-import {FileInterceptor} from "@nestjs/platform-express";
 import { AppService } from './app.service';
-import {Express} from "express";
+import {Controller, Get, Post, UploadedFile, UseInterceptors} from "@nestjs/common";
+import {FileInterceptor} from "@nestjs/platform-express";
+import {multerOptions} from "./multer.options";
 
 @Controller()
 export class AppController {
@@ -13,12 +13,11 @@ export class AppController {
   }
 
   @Post('file-upload')
-  @UseInterceptors(FileInterceptor('file')) // 파일 인터셉터
-  @Bind(UploadedFile)
-  fileUpload(file) {
+  @UseInterceptors(FileInterceptor('file', multerOptions)) // 파일 인터셉터
+  fileUpload(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
+    if(file) console.log(file.buffer.toString('utf-8'));
 
-    console.log(file.buffer.toString('utf-8'));
     return "File Upload";
   }
 
