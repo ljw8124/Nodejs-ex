@@ -153,3 +153,15 @@ Open Authorization 의 약자로 구글과 트위터가 만든 개방형 인가�
 $ npm i -D @types/multer
 ```
 파일업로드를 위한 패키지 설치 (타입정보가 있다면 더욱 안전한 코딩이 가능하다)
+
+FileInterceptor 는 첫 번째 인수로 폼 필드의 이름을 넣고, 두 번째 인수로는 어디에 저장할지, 어떤 파일의 형식을 허용할지, 파일명은 변경할지, 크기는 얼마까지 허용할지 등의 옵션을 제공한다.
+- storage: 파일이 저장 될 위치 및 파일 이름 제어
+- fileFilter: 어떤 형식의 파일을 허용할지 제어
+- limits: 필드명, 값, 파일 개수, 파일 용량, multipart 폼의 인수 개수, 헤더 개수 제한 설정
+- preservePath: 파일의 전체 경로를 유지할지 여부
+
+디스크에 파일을 저장해야 하므로 storage 를 이용하는데, storage 는 diskStorage() 와 memoryStorage() 가 있다.</br>
+아무 설정도 하지 않으면 memoryStorage() 를 사용하고 이 때 파일 속성은 buffer 이다. 따라서 메모리가 기본 값이다.
+
+디스크를 사용하는 diskStorage() 는 buffer 속성을 가지고 있지 않으므로 제거해야 한다.</br>
+즉, 디스크에 저장하는 옵션을 활성화하고 메모리를 사용하는 코드를 작성해야 한다.
