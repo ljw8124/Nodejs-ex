@@ -15,6 +15,12 @@ export class AppController {
   @Post('file-upload')
   @UseInterceptors(FileInterceptor('file', multerOptions)) // 파일 인터셉터
   fileUpload(@UploadedFile() file: Express.Multer.File) {
+
+    if(!file) {
+      console.error('파일이 업로드되지 않았습니다.');
+      return 'file upload failed...';
+    }
+
     console.log(file);
     // if(file) console.log(file.buffer.toString('utf-8'));
 
