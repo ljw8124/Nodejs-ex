@@ -18,7 +18,7 @@ export class AppController {
     console.log(file);
     // if(file) console.log(file.buffer.toString('utf-8'));
 
-    return "File Upload";
+    return `${file.originalname} File Uploaded check http://localhost:3000/uploads/${file.filename}`;   // 업로드한 파일명과 파일 경로 반환
   }
 
 }

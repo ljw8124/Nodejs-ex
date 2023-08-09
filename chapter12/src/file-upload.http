@@ -20,5 +20,5 @@ Content-Type: multipart/form-data; boundary=image-file-upload
 Content-Disposition: form-data; name="file"; filename="ticket.png"
 Content-Type: image/png
 
-< ticket.png # 경로 설정
+< ticket.png
 --image-file-upload--
