@@ -12,3 +12,13 @@ Content-Disposition: form-data; name="file"; filename="test.txt"
 ### helloworld
 GET http://localhost:3000/
 
+### image upload
+POST http://localhost:3000/file-upload
+Content-Type: multipart/form-data; boundary=image-file-upload
+
+--image-file-upload
+Content-Disposition: form-data; name="file"; filename="ticket.png"
+Content-Type: image/png
+
+< ticket.png # 경로 설정
+--image-file-upload--

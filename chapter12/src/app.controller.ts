@@ -16,7 +16,7 @@ export class AppController {
   @UseInterceptors(FileInterceptor('file', multerOptions)) // 파일 인터셉터
   fileUpload(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
-    if(file) console.log(file.buffer.toString('utf-8'));
+    // if(file) console.log(file.buffer.toString('utf-8'));
 
     return "File Upload";
   }
