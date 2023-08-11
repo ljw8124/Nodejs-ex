@@ -54,3 +54,12 @@
 
 
 ### 웹소켓은 데이터를 전장하는 것만 지원할 뿐 전송된 데이터로 무엇을 구현할지는 개발자의 몫이라고 할 수 있다.
+
+
+## NestJS 에서 채팅구현
+기존 처럼 네스트 프로젝트를 생성하고, 필요한 패키지 설치
+
+```
+$ npm i @nestjs/websockets @nestjs/platform-socket.io
+$ npm i -D @types/socket.io 
+```
