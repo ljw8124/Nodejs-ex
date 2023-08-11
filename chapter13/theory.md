@@ -63,3 +63,14 @@
 $ npm i @nestjs/websockets @nestjs/platform-socket.io
 $ npm i -D @types/socket.io 
 ```
+NestJS 에서 웹소켓을 사용한 통신을 받아주는 클래스를 게이트웨이라고 한다.</br>
+게이트웨이를 활용하면 의존성 주입, 데코레이터, 필터, 카드 등의 NestJS 기능을 사용할 수 있다.</br>
+
+
+간단히 말해서 프로토콜이 HTTP 라면 컨트롤러로부터 요청을 받고, 프로토콜이 ws 라면 게이트웨이로부터 요청을 받는 차이이다.
+
+
+게이트 파일 수동으로 생성
+```
+$ nest g gateway chat
+```
