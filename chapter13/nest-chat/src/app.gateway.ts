@@ -1,4 +1,4 @@
-import {WebSocketGateway, WebSocketServer, SubscribeMessage} from "@nestjs/websockets";
+import {WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody} from "@nestjs/websockets";
 import {Server, Socket} from 'socket.io';
 
 // 웹소켓 서버 설정 데코레이터
@@ -7,7 +7,8 @@ import {Server, Socket} from 'socket.io';
 @WebSocketGateway({namespace: 'chat'})
 export class ChatGateway {
     // 웹소켓 서버 인스턴스 선언
-    @WebSocketServer() server: Server;
+    @WebSocketServer()
+    server: Server;
 
     // message 이벤트 구독
     @SubscribeMessage('message')
@@ -23,5 +24,29 @@ export class ChatGateway {
         // 채팅을 할 때 내 메시지와 상대방 메시지를 구분하기 쉽다.
         socket.broadcast.emit('message', `${nickname}: ${message}`);
     }
+
+}
+
+@WebSocketGateway({namespace: 'room'})
+export class RoomGateway {
+    rooms = [];
+
+    @WebSocketServer()
+    server: Server;
+
+    @SubscribeMessage('createRoom')
+    // createRoom 핸들러 메서드
+    handleMessage(@MessageBody() data) {
+        const {nickname, room} = data;
+
+        console.log(nickname, room);
+
+        // 룸 정보를 받아서 정보에 추가
+        this.rooms.push(room);
+
+        // rooms 이벤트로 채팅방 리스트 전송
+        this.server.emit('rooms', this.rooms);
+    }
+
 
 }
