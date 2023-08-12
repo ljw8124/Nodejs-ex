@@ -3,7 +3,8 @@ import {Server, Socket} from 'socket.io';
 
 // 웹소켓 서버 설정 데코레이터
 // 파리머터로 포트 번호와 옵션을 넘길 수 있음
-@WebSocketGateway()
+// 게이트웨이에 네임스페이스 추가
+@WebSocketGateway({namespace: 'chat'})
 export class ChatGateway {
     // 웹소켓 서버 인스턴스 선언
     @WebSocketServer() server: Server;
