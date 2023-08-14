@@ -67,5 +67,18 @@ export class RoomGateway {
         socket.join(room);
     }
 
+    @SubscribeMessage('message')
+    handleMessageToRoom(socket: Socket, data) {
+        console.log(data);
+
+        const {nickname, room, message} = data;
+
+        // broadcast.emit() 을 이용하면 전송을 요청한 클라이언트를 제외하고 다른 클라이언트들에게 데이터를 전송
+        // to 는 방이름을 주어서 그곳을 바라보게 만듦
+        socket.broadcast.to(room).emit('message', {
+            message: `${nickname}: ${message}`
+        });
+    }
+
 
 }

@@ -12,8 +12,6 @@ let currentRoom = '';
 // prompt 는 사용자에게 값을 받고 변수에 할당한다.
 const nickname = prompt('닉네임을 입력해주세요.');
 
-// console.log(socket);
-
 function createRoom() {
   const room = prompt('생성할 방의 이름을 입력해주세요.');
   roomSocket.emit('createRoom', {room, nickname});
@@ -45,7 +43,30 @@ roomSocket.on("rooms", (dataArr) => {
     roomDiv.append(chatView);
   });
 
-})
+});
+
+// 전송 버튼 클릭시 입력된 글을 message 로 보냄
+function sendMessage() {
+  if(currentRoom === '') {
+    alert('방을 선택해주세요.');
+    return;
+  }
+
+  const message = document.querySelector('#message').value;
+  const data = {message, nickname, room: currentRoom};
+
+  const chatView = document.querySelector('#chat');
+  const divEle = document.createElement('div');
+
+  divEle.innerHTML = `나: ${message}`;
+
+  chatView.appendChild(divEle);
+
+  // RoomGateway 로 메시지 보내기
+  roomSocket.emit('message', data);
+  return false;
+
+}
 
 // 방에 들어가면 기존에 있던 방에서 나가기
 function joinRoom(data) {
@@ -54,34 +75,25 @@ function joinRoom(data) {
 
   roomSocket.emit('joinRoom', {room, nickname, toLeaveRoom: currentRoom});
 
+  // 채팅방이동시 기존 대화기록 삭제
+  document.querySelector('#chat').innerHTML = '';
+
   currentRoom = room;
 
-}
-
-// 전송 버튼 클릭시 입력된 글을 message 로 보냄
-function sendMessage() {
-  const message = document.querySelector('#message').value;
-  const chatDiv = document.querySelector('#chat');
-
-  const divEle = document.createElement('div');
-  const messageNode = document.createTextNode(message);
-
-  divEle.appendChild(messageNode);
-
-  chatDiv.append();
-
-  socket.emit('message', {message, nickname});
 }
 
 socket.on('connect', () => {
   console.log('chat server connect!');
 });
 
-socket.on('message', (message) => {
+roomSocket.on('message', (data) => {
+
+  console.log(data);
+
   const chatDiv = document.querySelector('#chat');
 
   const divEle = document.createElement('div');
-  const messageNode = document.createTextNode(message);
+  const messageNode = document.createTextNode(data.message);
 
   divEle.append(messageNode);
   chatDiv.appendChild(divEle);
