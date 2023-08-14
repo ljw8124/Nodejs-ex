@@ -29,6 +29,9 @@ export class ChatGateway {
 
 @WebSocketGateway({namespace: 'room'})
 export class RoomGateway {
+    // 채팅 게이트웨이 의존성 주입
+    constructor(private readonly chatGateway: ChatGateway) {}
+
     rooms = [];
 
     @WebSocketServer()
@@ -39,13 +42,29 @@ export class RoomGateway {
     handleMessage(@MessageBody() data) {
         const {nickname, room} = data;
 
-        console.log(nickname, room);
+        this.chatGateway.server.emit('notice', {
+            message: `${nickname} 님이 ${room} 방을 만들었습니다.`,
+        });
 
         // 룸 정보를 받아서 정보에 추가
         this.rooms.push(room);
 
         // rooms 이벤트로 채팅방 리스트 전송
         this.server.emit('rooms', this.rooms);
+    }
+
+    @SubscribeMessage('joinRoom')
+    handleJoinRoom(socket: Socket, data) {
+        const {nickname, room, toLeaveRoom} = data;
+        // 기존의 방에서 먼저 퇴장
+        socket.leave(toLeaveRoom);
+
+        this.chatGateway.server.emit('notice', {
+            message: `${nickname} 님이 ${room} 방에 입장했습니다.`
+        });
+
+        // 실제 방 입장처리
+        socket.join(room);
     }
 
 
